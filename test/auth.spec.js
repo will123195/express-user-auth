@@ -1,19 +1,14 @@
 const test = require('tape')
 const request = require('request-promise')
 const http = require('http')
-const path = require('path')
 const fs = require('fs')
-const mkdirp = require('mkdirp')
-const rimraf = require('rimraf')
 
 let server
 let port = 5555
 
-test('clean', t => {
-  rimraf.sync(src)
-  rimraf.sync(dist)
-  t.end()
-})
+function getUrl(uri) {
+  return `http://localhost:${port}${uri}`
+}
 
 test('start server', t => {
   const app = require('../sample-app')
@@ -22,11 +17,10 @@ test('start server', t => {
 })
 
 test('register', t => {
-  return request.get({
-    url: '/register'
+  request.get({
+    url: getUrl('/register')
   })
-  .then(res => {
-    t.equal(res.statusCode, 200)
+  .then(body => {
     t.end()
   })
 })

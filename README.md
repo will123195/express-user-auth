@@ -9,7 +9,8 @@ Simple user authentication for your Express app
 ## Install 
 
 ```
-npm i --save express-semantic-auth
+npm install express
+npm install express-semantic-auth
 ```
 
 ## Usage

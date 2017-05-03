@@ -1,0 +1,31 @@
+{
+  "name": "express-semantic-auth",
+  "version": "1.0.0",
+  "description": "Simple user authentication for your Express app",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node test/auth.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/will123195/express-semantic-auth.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/will123195/express-semantic-auth/issues"
+  },
+  "homepage": "https://github.com/will123195/express-semantic-auth#readme",
+  "devDependencies": {
+    "express": "^4.15.2",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.0",
+    "tape": "^4.6.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.1"
+  }
+}
