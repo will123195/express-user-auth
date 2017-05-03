@@ -1,5 +1,10 @@
 # express-semantic-auth
-User authentication for your express app
+
+Simple user authentication for your Express app
+
+- Responsive Semantic UI
+- Works with any database
+- Login with email, Facebook, Twitter, Google, or Github
 
 ## Install 
 
@@ -26,7 +31,7 @@ app.use('/', auth({
   google
 }));
 
-app.listen();
+app.listen(3000);
 ```
 
 ## Screenshots
