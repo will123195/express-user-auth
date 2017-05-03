@@ -29,15 +29,8 @@ app.use('/', auth({
 app.listen();
 ```
 
-## Quick Start
+## Screenshots
 
-Mounting this express app gives you the following functionality:
 
-UI:
-- Login `/login`
-- Logout `/logout`
-- Forgot Password `/forgot-password`
-- Register `/register`
 
-REST API
-- 
+
