@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <title>Register</title>
+  <link href="//cdn.jsdelivr.net/semantic-ui/2.2.7/semantic.min.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="/css/register.css" media="all" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<main>
+  <h1>Create New Account</h1>
+
+  <div class="already-registered">
+    Already have an account?
+    <a href="/login" class="ui button red">Sign In</a>
+  </div>
+
+
+
+  <form class="ui big form register">
+
+    <input type="hidden" name="inviteToken" value="" />
+
+    <div class="field">
+      <label>Name</label>
+      <div class="two fields">
+        <div class="field">
+          <input type="text" name="firstName" placeholder="First name">
+        </div>
+        <div class="field">
+          <input type="text" name="lastName" placeholder="Last name">
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Email address</label>
+      <div class="field">
+        <input type="email" name="email" placeholder="Email address">
+        <div class="error email-error"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Choose a password</label>
+      <div class="two fields">
+        <div class="field">
+          <input type="password" name="password" placeholder="Password">
+        </div>
+        <div class="field">
+          <input type="password" name="confirmPassword" placeholder="Confirm password">
+        </div>
+      </div>
+    </div>
+
+    <div class="inline field tos">
+      <div class="ui checkbox">
+        <input name="terms" type="checkbox" class="hidden">
+        <label>I agree to the
+          <a href="/terms-of-service" target="_blank">terms of service <i class="external icon"></i></a>
+        </label>
+      </div>
+    </div>
+
+    <div class="ui submit button black">Register</div>
+    <div class="ui error message"></div>
+  </form>
+
+
+</main>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/semantic-ui/2.2.7/semantic.min.js"></script>
+<script type="text/javascript" src="/js/register.js"></script>
+</body>
+</html>

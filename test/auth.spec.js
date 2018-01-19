@@ -6,7 +6,7 @@ const fs = require('fs')
 let server
 let port = 5555
 
-function getUrl(uri) {
+function url(uri) {
   return `http://localhost:${port}${uri}`
 }
 
@@ -18,7 +18,7 @@ test('start server', t => {
 
 test('register', t => {
   request.get({
-    url: getUrl('/register')
+    url: url('/register')
   })
   .then(body => {
     t.end()

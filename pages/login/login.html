@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <title>Log in</title>
+  <link href="//cdn.jsdelivr.net/semantic-ui/2.2.7/semantic.min.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="/css/login.css" media="all" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui red image header">
+      <div class="content">
+        Sign in to your account
+      </div>
+    </h2>
+    <form class="ui large form login">
+      <div class="ui stacked segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input class="email" type="text" name="email" placeholder="E-mail address">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password">
+          </div>
+        </div>
+        <div class="ui fluid large red submit button">Login</div>
+      </div>
+
+      <div class="ui error message"></div>
+
+    </form>
+
+    <div class="ui message">
+      <a href="">Forgot password?</a>
+      <br />
+      Don't have an account? <a href="/register">Register</a>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/semantic-ui/2.2.7/semantic.min.js"></script>
+<script type="text/javascript" src="/js/login.js"></script>
+</body>
+</html>

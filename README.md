@@ -22,8 +22,8 @@ import auth from 'express-semantic-auth';
 const app = express();
  
 app.use('/', auth({
-  authenticate, // required
-  getUserById, // required
+  authenticate: function (username, password) { return true }, // required
+  getUserById: function (userId) {}, // required
   setPassword, // required
   createUser, // required
   updateUser, // required

@@ -7,6 +7,9 @@
     "test": "test"
   },
   "scripts": {
+    "build": "npm run build-js && npm run build-css",
+    "build-js": "browserify src > dist/index.js",
+    "build-css": "",
     "test": "node test/auth.spec.js"
   },
   "repository": {
@@ -20,12 +23,21 @@
   },
   "homepage": "https://github.com/will123195/express-semantic-auth#readme",
   "devDependencies": {
+    "browserify": "^15.2.0",
     "express": "^4.15.2",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
     "tape": "^4.6.3"
   },
   "dependencies": {
-    "body-parser": "^1.17.1"
+    "body-parser": "^1.17.1",
+    "browserify-middleware": "^8.0.0",
+    "client-sessions": "^0.8.0",
+    "cookie-parser": "^1.4.3",
+    "es6-promise-polyfill": "^1.2.0",
+    "express-less": "^0.1.0",
+    "hbs": "^4.0.1",
+    "idiot": "^2.0.0",
+    "less-middleware": "^2.2.1"
   }
 }
