@@ -1,5 +1,5 @@
 {
-  "name": "express-semantic-auth",
+  "name": "express-user-auth",
   "version": "1.0.0",
   "description": "Simple user authentication for your Express app",
   "main": "index.js",
@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/will123195/express-semantic-auth.git"
+    "url": "git+https://github.com/will123195/express-user-auth.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/will123195/express-semantic-auth/issues"
+    "url": "https://github.com/will123195/express-user-auth/issues"
   },
-  "homepage": "https://github.com/will123195/express-semantic-auth#readme",
+  "homepage": "https://github.com/will123195/express-user-auth#readme",
   "devDependencies": {
     "browserify": "^15.2.0",
     "express": "^4.15.2",
