@@ -4,7 +4,7 @@ Simple user authentication for your Express app
 
 - Responsive Semantic UI
 - Works with any database
-- Login with email, Facebook, Twitter, Google, or Github
+- TODO: Login with email, Facebook, Twitter, Google, or Github
 
 ## Install 
 
@@ -23,13 +23,8 @@ const app = express();
  
 app.use('/', auth({
   authenticate: function (username, password) { return true }, // required
-  getUserById: function (userId) {}, // required
-  setPassword, // required
-  createUser, // required
-  updateUser, // required
-  facebook,
-  twitter,
-  google
+  createUser: function (user) { return user }, // required
+  forgotPassword: function (email) { return true } // required
 }));
 
 app.listen(3000);
