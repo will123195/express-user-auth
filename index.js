@@ -80,10 +80,9 @@ module.exports = function (config) {
     cookieName: 'session'
   }))
 
-  // set req.user
+  // set req.session.user
   app.use((req, res, next) => {
     if (req.session.user) {
-      req.user = req.session.user
       return next()
     }
     const token = req.query.accessToken
@@ -91,7 +90,7 @@ module.exports = function (config) {
       || parseBearerToken(req)
     if (token) {
       return getUserByToken(token).then(user => {
-        req.user = user
+        req.session.user = user
         return next()
       })
     }
@@ -125,7 +124,7 @@ module.exports = function (config) {
   })
 
   app.get('/logout', (req, res) => {
-    delete req.session
+    req.session = {}
     res.redirect('/')
   })
 
