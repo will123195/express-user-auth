@@ -1,34 +1,43 @@
-# express-semantic-auth
+# express-user-auth
 
-Simple user authentication for your Express app
+Quickly add user authentication to your Express app
 
-- Responsive Semantic UI
 - Works with any database
-- TODO: Login with email, Facebook, Twitter, Google, or Github
+- Passwords stored using bcrypt
+- TODO: Login with Facebook, Twitter, Google, or Github
 
 ## Install 
 
 ```
-npm install express
-npm install express-semantic-auth
+npm i express express-user-auth
 ```
 
 ## Usage
 
 ```js
-import express from 'express';
-import auth from 'express-semantic-auth';
+import express from 'express'
+import auth from 'express-user-auth'
  
-const app = express();
+const app = express()
  
 app.use('/', auth({
-  authenticate: function (username, password) { return true }, // required
-  createUser: function (user) { return user }, // required
-  forgotPassword: function (email) { return true } // required
-}));
+  secret: 'abcdef',
+  createUser: function (user) { return user },
+  getUserByUsername: function (username) { return user },
+  updateUser: function (data) { return user }
+}))
 
-app.listen(3000);
+app.listen(3000)
 ```
+
+## Routes
+
+`express-user-auth` creates the following routes:
+
+- `GET /login`
+- `POST /login`
+- `GET /register`
+- `POST /register`
 
 ## Screenshots
 

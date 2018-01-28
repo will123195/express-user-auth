@@ -10,6 +10,7 @@
     "build": "npm run build-js && npm run build-css",
     "build-js": "browserify src > dist/index.js",
     "build-css": "",
+    "start": "nodemon server.js",
     "test": "node test/auth.spec.js"
   },
   "repository": {
@@ -25,11 +26,13 @@
   "devDependencies": {
     "browserify": "^15.2.0",
     "express": "^4.15.2",
+    "nodemon": "^1.14.11",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
     "tape": "^4.6.3"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "browserify-middleware": "^8.0.0",
     "client-sessions": "^0.8.0",
@@ -38,6 +41,8 @@
     "express-less": "^0.1.0",
     "hbs": "^4.0.1",
     "idiot": "^2.0.0",
-    "less-middleware": "^2.2.1"
+    "jsonwebtoken": "^8.1.1",
+    "less-middleware": "^2.2.1",
+    "moment": "^2.20.1"
   }
 }

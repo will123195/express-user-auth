@@ -20,7 +20,7 @@ $doc.on('submit', 'form.login', function (e) {
   e.preventDefault()
   var $form = $(this)
   $form.find('.error.message').hide()
-  api.post('/users/login', {
+  api.post('/login', {
     username: $form.find('[name="email"]').val(),
     password: $form.find('[name="password"]').val()
   })

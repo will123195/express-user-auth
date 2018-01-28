@@ -86,7 +86,7 @@ $doc
       }
       body[field.name] = field.value
     })
-    api.post('/users', body)
+    api.post('/register', body)
       .then(function () {
         location.href = '/'
       })
