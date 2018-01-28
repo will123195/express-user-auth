@@ -43,6 +43,7 @@
     "idiot": "^2.0.0",
     "jsonwebtoken": "^8.1.1",
     "less-middleware": "^2.2.1",
-    "moment": "^2.20.1"
+    "moment": "^2.20.1",
+    "parse-bearer-token": "0.0.1"
   }
 }

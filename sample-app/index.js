@@ -7,8 +7,10 @@ const app = express();
 const db = {}
 
 app.use('/', auth({
-  secret: 'xyz',
+  jwtSecret: 'xyz',
+  sessionSecret: 'xyz',
   createUser: user => Promise.resolve(Object.assign(db, { user })),
+  getUserById: userId => Promise.resolve(db.user),
   getUserByUsername: username => Promise.resolve(db.user),
   updateUser: data => Promise.resolve(Object.assign(db.user, data))
 }))

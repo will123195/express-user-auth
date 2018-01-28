@@ -10,6 +10,7 @@ const bcrypt = Promise.promisifyAll(require('bcryptjs'))
 const jwt = require('jsonwebtoken')
 const browserify = require('browserify-middleware')
 const less = require('express-less')
+const parseBearerToken = require('parse-bearer-token')
 
 const passwordAlgo = 'bcrypt'
 
@@ -35,12 +36,13 @@ module.exports = function (config) {
         }
         userId = user.id
         return checkPassword(password, user.passwordHash)
-      })
-      .then(isCorrect => {
-        if (!isCorrect) {
-          throw new Error('Wrong password.')
-        }
-        return generateToken(userId)
+          .then(isCorrect => {
+            if (!isCorrect) {
+              throw new Error('Wrong password.')
+            }
+            const token = generateToken(userId)
+            return { jwt: token, user }
+          })
       })
   }
 
@@ -52,13 +54,21 @@ module.exports = function (config) {
       u: userId,
       exp
     };
-    const token = jwt.sign(payload, config.secret);
+    const accessToken = jwt.sign(payload, config.jwtSecret);
     return {
-      accessToken: token,
+      accessToken,
       expires: new Date(exp * 1000)
     };
   }
 
+  function getUserByToken(token) {
+    const decoded = jwt.verify(token, config.jwtSecret);
+    if (!decoded.u) {
+      throw new Error('Access token is not valid.');
+    }
+    const userId = decoded.u;
+    return config.getUserById(userId)
+  }
 
   app.set('view engine', 'html')
   app.set('views', `${__dirname}/pages`)
@@ -66,9 +76,27 @@ module.exports = function (config) {
   app.use(bodyParser.json())
   app.use(cookieParser())
   app.use(sessions({
-    secret: config.secret,
+    secret: config.sessionSecret,
     cookieName: 'session'
   }))
+
+  // set req.user
+  app.use((req, res, next) => {
+    if (req.session.user) {
+      req.user = req.session.user
+      return next()
+    }
+    const token = req.query.accessToken
+      || req.headers['x-access-token']
+      || parseBearerToken(req)
+    if (token) {
+      return getUserByToken(token).then(user => {
+        req.user = user
+        return next()
+      })
+    }
+    next()
+  })
 
   // html pages
   const pages = [
@@ -86,15 +114,18 @@ module.exports = function (config) {
   // login
   app.post('/login', (req, res, next) => {
     authenticate(req.body.username, req.body.password)
-      .then(user => {
-        req.session.user = user
-        res.json(user)
+      .then(data => {
+        req.session.user = data.user
+        req.session.jwt = data.jwt
+        res.json(data)
       })
-      .catch(next)
+      .catch(err => {
+        next(err)
+      })
   })
 
   app.get('/logout', (req, res) => {
-    delete req.session.user
+    delete req.session
     res.redirect('/')
   })
 
