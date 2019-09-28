@@ -133,6 +133,8 @@ module.exports = function (config) {
     const data = req.body
     generatePasswordHash(data.password)
       .then(passwordHash => {
+        delete data.password
+        delete data.confirmPassword
         config.createUser(Object.assign({ passwordHash, passwordAlgo }, data))
           .then(user => {
             req.session.user = user
