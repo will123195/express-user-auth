@@ -131,11 +131,18 @@ module.exports = function (config) {
   // register
   app.post('/register', (req, res) => {
     const data = req.body
-    generatePasswordHash(data.password)
-      .then(passwordHash => {
+    Promise.resolve()
+      .then(() => {
+        if (!data.password) return
+        return generatePasswordHash(data.password)
+          .then(passwordHash => {
+            Object.assign(data, { passwordHash, passwordAlgo })
+          })
+      })
+      .then(() => {  
         delete data.password
         delete data.confirmPassword
-        config.createUser(Object.assign({ passwordHash, passwordAlgo }, data))
+        config.createUser(data)
           .then(user => {
             req.session.user = user
             res.json(user)
