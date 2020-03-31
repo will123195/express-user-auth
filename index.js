@@ -129,7 +129,7 @@ module.exports = function (config) {
   })
 
   // register
-  app.post('/register', (req, res) => {
+  app.post('/register', (req, res, next) => {
     const data = req.body
     Promise.resolve()
       .then(() => {
@@ -147,6 +147,9 @@ module.exports = function (config) {
             req.session.user = user
             res.json(user)
           })
+      })
+      .catch(err => {
+        next(err)
       })
   })
 
