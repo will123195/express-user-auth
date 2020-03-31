@@ -142,7 +142,7 @@ module.exports = function (config) {
       .then(() => {  
         delete data.password
         delete data.confirmPassword
-        config.createUser(data)
+        return config.createUser(data)
           .then(user => {
             req.session.user = user
             res.json(user)
