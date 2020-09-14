@@ -83,7 +83,13 @@ module.exports = function (config) {
   // set req.session.user
   app.use((req, res, next) => {
     if (req.session.user) {
-      return next()
+      if (!config.userCacheTTL || !config.getUserById) {
+        return next()
+      }
+      return config.getUserById(req.session.user.id).then(user => {
+        req.session.user = user
+        return next()
+      })
     }
     const token = req.query.accessToken
       || req.headers['x-access-token']
@@ -100,7 +106,9 @@ module.exports = function (config) {
   // html pages
   const pages = [
     'login',
-    'register'
+    'register',
+    'forgot-password',
+    'reset-password'
   ]
   pages.forEach(page => {
     app.use('/js', browserify(`${__dirname}/pages/${page}`))
@@ -151,6 +159,55 @@ module.exports = function (config) {
       .catch(err => {
         next(err)
       })
+  })
+
+  const getRandomPIN = () => Math.floor(Math.random() * 899999 + 100000)
+
+  app.post('/send-password-reset', (req, res, next) => {
+    const passwordResetToken = getRandomPIN()
+    const { username } = req.body
+    if (!username) throw new Error('Please enter email address.')
+    const uri = `/reset-password?u=${encodeURIComponent(username)}&t=${passwordResetToken}`
+    Promise.resolve()
+      .then(() => config.getUserByUsername(username))
+      .then(user => {
+        if (!user) throw new Error('The email address you entered is not in our system.')
+        Object.assign(user, { passwordResetToken })
+        return config.updateUser(user)
+          .then(() => config.sendPasswordReset({ user, uri, passwordResetToken }))
+          .then(() => res.send({ sent: true }))
+      })
+      .catch(next)
+  })
+
+  app.post('/reset-password', (req, res, next) => {
+    const { username, password, passwordResetToken } = req.body
+    if (!username) throw new Error('Please enter email address.')
+    if (!password) throw new Error('Please enter a password.')
+    if (!passwordResetToken) throw new Error('Missing password reset token.')
+    Promise.resolve()
+      .then(() => config.getUserByUsername(username))
+      .then(user => {
+        if (!user) throw new Error('The email address you entered is not in our system.')
+        if (user.passwordResetToken !== passwordResetToken) {
+          // invalid reset token, disable the token to prevent brute force attack
+          Object.assign(user, { passwordResetToken: null })
+          return config.updateUser(user).then(() => {
+            throw new Error('Invalid password reset token. Try resetting your password again.')
+          })
+        }
+        // save new password hash
+        return generatePasswordHash(password)
+          .then(passwordHash => {
+            Object.assign(user, { passwordHash, passwordAlgo, passwordResetToken: null })
+            return config.updateUser(user)
+              .then(() => {
+                req.session.user = user
+                res.json(user)
+              })
+          })
+      })
+      .catch(next)
   })
 
   return app

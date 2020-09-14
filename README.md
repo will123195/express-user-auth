@@ -3,7 +3,8 @@
 Quickly add user authentication to your Express app
 
 - Works with any database
-- Passwords stored using bcrypt
+- Password hash stored using bcrypt
+- Password reset functionality
 - TODO: Login with Facebook, Twitter, Google, or Github
 
 ## Install 
@@ -11,6 +12,13 @@ Quickly add user authentication to your Express app
 ```
 npm i express express-user-auth
 ```
+
+## Requirements
+
+Your `createUser` and `updateUser` methods must be able to save the following fields: 
+- `passwordHash`
+- `passwordAlgo`
+- `passwordResetToken`
 
 ## Usage
 
@@ -20,11 +28,13 @@ import auth from 'express-user-auth'
  
 const app = express()
  
+// all functions are async and should return a Promise
 app.use('/', auth({
   secret: 'abcdef',
   createUser: function (user) { return user },
   getUserByUsername: function (username) { return user },
-  updateUser: function (data) { return user }
+  updateUser: function (data) { return user },
+  sendPasswordReset: function ({ user, uri }) { }
 }))
 
 app.listen(3000)
@@ -35,9 +45,14 @@ app.listen(3000)
 `express-user-auth` creates the following routes:
 
 - `GET /login`
-- `POST /login`
 - `GET /register`
+- `GET /forgot-password`
+- `GET /reset-password`
+- 
+- `POST /login`
 - `POST /register`
+- `POST /send-password-reset`
+- `POST /reset-password`
 
 ## Screenshots
 

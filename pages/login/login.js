@@ -33,16 +33,6 @@ $doc.on('submit', 'form.login', function (e) {
   return false
 })
 
-$doc.on('click', '.forgot-pw', function (e) {
-  $('.ui.modal.login')
-    .modal('hide')
-  $('.ui.modal.forgot-password')
-    .modal('setting', 'transition', 'horizontal flip')
-    .modal('show')
-  e.preventDefault()
-  return false
-})
-
 $doc.on('click', '.send-reset.button', function (e) {
   var $modal = $(this).parents('.modal')
   $modal.find('.error').hide()
