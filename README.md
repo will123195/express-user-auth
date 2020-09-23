@@ -44,18 +44,28 @@ app.listen(3000)
 
 `express-user-auth` creates the following routes:
 
-- `GET /login`
 - `GET /register`
+- `GET /login`
 - `GET /forgot-password`
 - `GET /reset-password`
-- 
-- `POST /login`
+
 - `POST /register`
+- `POST /login`
 - `POST /send-password-reset`
 - `POST /reset-password`
 
 ## Screenshots
 
+You get this UI out of the box:
 
+<img src='screenshots/register.png' />
+<hr />
+<img src='screenshots/sign-in.png' />
+<hr />
+<img src='screenshots/forgot-password.png' />
+<hr />
+<img src='screenshots/email-sent.png' />
+<hr />
+<img src='screenshots/choose-password.png' />
 
 
