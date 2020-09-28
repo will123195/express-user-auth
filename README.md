@@ -30,7 +30,8 @@ const app = express()
  
 // all functions are async and should return a Promise
 app.use('/', auth({
-  secret: 'abcdef',
+  sessionSecret: 'XXXX',
+  jwtSecret: 'XXXX',
   createUser: function (user) { return user },
   getUserByUsername: function (username) { return user },
   updateUser: function (data) { return user },
