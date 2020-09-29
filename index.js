@@ -114,6 +114,9 @@ module.exports = function (config) {
     app.use('/js', browserify(`${__dirname}/pages/${page}`))
     app.use('/css', less(`${__dirname}/pages/${page}`, { cache: true }))
     app.get(`/${page}`, (req, res) => {
+      if (page === 'reset-password' && req.query.success) {
+        return res.redirect(config.passwordResetRedirectURL || '/')
+      }
       res.render(`${page}/${page}`)
     })
   })

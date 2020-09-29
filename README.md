@@ -35,7 +35,8 @@ app.use('/', auth({
   createUser: function (user) { return user },
   getUserByUsername: function (username) { return user },
   updateUser: function (data) { return user },
-  sendPasswordReset: function ({ user, uri }) { }
+  sendPasswordReset: function ({ user, uri }) { },
+  passwordResetRedirectURL: '/'
 }))
 
 app.listen(3000)

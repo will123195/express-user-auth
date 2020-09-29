@@ -41,7 +41,7 @@ $doc.on('submit', '.reset-password-form', function (e) {
     passwordResetToken: urlParams.get('t')
   })
     .then(function () {
-      window.location.href = '/'
+      window.location.href = '/reset-password?success=true'
     })
     .catch(function (err) {
       $form.find('.error').html(err.message).fadeIn()
