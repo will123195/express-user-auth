@@ -91,6 +91,21 @@ test('login', t => {
     .catch(t.end)
 })
 
+test('login page js', t => {
+  request('/js/login.js')
+    .then(res => {
+      t.equal(res.status, 200)
+      t.ok(String(res.headers.get('content-type')).indexOf('javascript') !== -1)
+      return res.text()
+    })
+    .then(js => {
+      t.ok(js.indexOf('/login') !== -1)
+      t.ok(js.indexOf('XMLHttpRequest') !== -1)
+      t.end()
+    })
+    .catch(t.end)
+})
+
 test('login page css', t => {
   request('/css/login.css')
     .then(res => {
