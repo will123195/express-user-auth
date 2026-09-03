@@ -2,25 +2,72 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const hbs = require('hbs').__express
 const fs = require('fs')
+const path = require('path')
+const { promisify } = require('util')
 const cookieParser = require('cookie-parser')
 const sessions = require('client-sessions')
-const Promise = require('bluebird')
 const moment = require('moment')
-const bcrypt = Promise.promisifyAll(require('bcryptjs'))
+const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const browserify = require('browserify-middleware')
-const less = require('express-less')
+const esbuild = require('esbuild')
+const less = require('less')
 const parseBearerToken = require('parse-bearer-token')
 
+const compareAsync = promisify(bcryptjs.compare)
+const genSaltAsync = promisify(bcryptjs.genSalt)
+const hashAsync = promisify(bcryptjs.hash)
+
 const passwordAlgo = 'bcrypt'
+const jwtAlgorithm = 'HS256'
 
 const checkPassword = function (password, passwordHash) {
-  return bcrypt.compareAsync(String(password), String(passwordHash));
+  return compareAsync(String(password), String(passwordHash));
 };
 
 const generatePasswordHash = function (password) {
-  return bcrypt.genSaltAsync(10)
-    .then(salt => bcrypt.hashAsync(password, salt));
+  return genSaltAsync(10)
+    .then(salt => hashAsync(password, salt));
+}
+
+const serveLess = function (dir) {
+  return function (req, res, next) {
+    if (!req.path.endsWith('.css')) return next()
+    const lessFile = path.join(dir, path.basename(req.path).replace(/\.css$/, '.less'))
+    fs.readFile(lessFile, 'utf8', (err, src) => {
+      if (err) return next()
+      less.render(src, { filename: lessFile }).then(output => {
+        res.type('css').send(output.css)
+      }).catch(next)
+    })
+  }
+}
+
+const jsCache = {}
+const serveJs = function (dir) {
+  return function (req, res, next) {
+    if (!req.path.endsWith('.js')) return next()
+    const entry = path.join(dir, path.basename(req.path))
+    if (jsCache[entry]) {
+      res.type('js').send(jsCache[entry])
+      return
+    }
+    fs.access(entry, fs.constants.R_OK, (err) => {
+      if (err) return next()
+      esbuild.build({
+        entryPoints: [entry],
+        bundle: true,
+        write: false,
+        format: 'iife',
+        platform: 'browser',
+        target: ['es5'],
+        logLevel: 'silent'
+      }).then(result => {
+        const code = result.outputFiles[0].text
+        jsCache[entry] = code
+        res.type('js').send(code)
+      }).catch(next)
+    })
+  }
 }
 
 module.exports = function (config) {
@@ -54,7 +101,7 @@ module.exports = function (config) {
       u: userId,
       exp
     };
-    const accessToken = jwt.sign(payload, config.jwtSecret);
+    const accessToken = jwt.sign(payload, config.jwtSecret, { algorithm: jwtAlgorithm });
     return {
       accessToken,
       expires: new Date(exp * 1000)
@@ -62,7 +109,7 @@ module.exports = function (config) {
   }
 
   function getUserByToken(token) {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    const decoded = jwt.verify(token, config.jwtSecret, { algorithms: [jwtAlgorithm] });
     if (!decoded.u) {
       throw new Error('Access token is not valid.');
     }
@@ -111,8 +158,8 @@ module.exports = function (config) {
     'reset-password'
   ]
   pages.forEach(page => {
-    app.use('/js', browserify(`${__dirname}/pages/${page}`))
-    app.use('/css', less(`${__dirname}/pages/${page}`, { cache: true }))
+    app.use('/js', serveJs(`${__dirname}/pages/${page}`))
+    app.use('/css', serveLess(`${__dirname}/pages/${page}`))
     app.get(`/${page}`, (req, res) => {
       if (page === 'reset-password' && req.query.success) {
         return res.redirect(config.passwordResetRedirectURL || '/')

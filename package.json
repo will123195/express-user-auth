@@ -7,9 +7,6 @@
     "test": "test"
   },
   "scripts": {
-    "build": "npm run build-js && npm run build-css",
-    "build-js": "browserify src > dist/index.js",
-    "build-css": "",
     "start": "nodemon server.js",
     "test": "node test/auth.spec.js"
   },
@@ -24,26 +21,21 @@
   },
   "homepage": "https://github.com/will123195/express-user-auth#readme",
   "devDependencies": {
-    "browserify": "^15.2.0",
-    "express": "^4.15.2",
-    "nodemon": "^1.14.11",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.0",
-    "tape": "^4.6.3"
+    "express": "^4.22.2",
+    "nodemon": "^3.1.14",
+    "tape": "^5.10.2"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "body-parser": "^1.17.1",
-    "browserify-middleware": "^8.0.0",
+    "body-parser": "^1.20.6",
     "client-sessions": "^0.8.0",
-    "cookie-parser": "^1.4.3",
+    "cookie-parser": "^1.4.7",
     "es6-promise-polyfill": "^1.2.0",
-    "express-less": "^0.1.0",
-    "hbs": "^4.0.1",
-    "idiot": "^2.0.0",
-    "jsonwebtoken": "^8.1.1",
-    "less-middleware": "^2.2.1",
-    "moment": "^2.20.1",
+    "esbuild": "^0.28.2",
+    "hbs": "^4.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "less": "^4.9.0",
+    "moment": "^2.30.1",
     "parse-bearer-token": "0.0.1"
   }
 }
